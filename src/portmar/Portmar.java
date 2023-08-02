@@ -16,16 +16,18 @@ public class Portmar extends Application {
     
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("MAinFXML.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("MainFXML.fxml"));
         primaryStage.setTitle("PORTMAR");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
+        System.out.print("portmar start...\n");
     }
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        System.out.print("portmar main...\n");
         launch(args);
     }
     
