@@ -10,8 +10,8 @@ public class MainFXMLController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
         System.out.print("controller initialize...\n");
+        
     }    
     
 }
