@@ -2,6 +2,7 @@
 package portmar.Data;
 
 
-public class TableContentHandler extends TableContent{
+public class TableContentHandler{
+    
     
 }

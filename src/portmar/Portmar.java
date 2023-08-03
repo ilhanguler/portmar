@@ -11,6 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.fxml.*;
+import javax.swing.text.View;
 
 public class Portmar extends Application {
     
@@ -23,9 +24,9 @@ public class Portmar extends Application {
         primaryStage.show();
     }
 
-    /**
-     * @param args the command line arguments
-     */
+    
+    
+    
     public static void main(String[] args) {
         System.out.print("portmar main...\n");
         launch(args);
