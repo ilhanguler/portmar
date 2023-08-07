@@ -1,43 +1,63 @@
 package portmar.DataIO;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
-import org.apache.poi.openxml4j.opc.OPCPackage;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.openxml4j.opc.OPCPackage; // OPC daha az hafıza kullanıyor !!!!!!!!!!!!!!!!!!!!!!!!!!!!
+import org.apache.poi.ss.formula.functions.Rows;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import portmar.Data.TWorkbookInstance;
 
 public class XlsxIO {
 
-    TWorkbookInstance excelinstance;
+    TWorkbookInstance excelinstance = new TWorkbookInstance();
 
     public void ScanExcel(String excelFile) {
         try {
-            File fil = new File(excelFile);
-            FileInputStream file = new FileInputStream(fil);
-            
-            
-            XSSFWorkbook workbook = new XSSFWorkbook("C:\\Users\\HP\\Desktop\\test.xlsx");
-            for (Sheet sheet : workbook) {
-                
-                for (Row row : sheet) {
-                    System.out.println(row.toString() + "\n");
-                    System.out.println(row.getCell(0).getStringCellValue() + "\n");
-                    System.out.println(row.getCell(0) + "\n");
-                    System.out.println(row.getCell(0).toString() + "\n");
+            FileInputStream file = new FileInputStream(new File(excelFile));
+            Workbook workbook = new XSSFWorkbook(file);
+            int sheetctr = 0;
+            for (Iterator<Sheet> its = workbook.iterator(); its.hasNext(); sheetctr++) {
+                Sheet sheet = its.next();
+                excelinstance.addTSheet();
+                excelinstance.addTTable(sheetctr);
+
+                int rowctr = 0;
+                for (Iterator<Row> itr = sheet.iterator(); itr.hasNext(); rowctr++) {
+                    Row row = itr.next();
+                    System.out.println(sheetctr);
+                    excelinstance.addTRow(sheetctr, 0);
+                    int cellctr = 0;
+                    for (Iterator<Cell> itc = row.iterator(); itc.hasNext(); cellctr++) {
+                        Cell cell = itc.next();
+                        excelinstance.addTCell(sheetctr, 0, rowctr,cell);
+
+                    }
                 }
             }
             workbook.close();
-            
+            file.close();
 
         } catch (FileNotFoundException ex) {
             Logger.getLogger(XlsxIO.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(XlsxIO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void testOutput() {
+        for (int i = 0; i < excelinstance.workbook.size(); i++) {
+            for (int j = 0; j < excelinstance.getTSheet(i).size(); j++) {
+                for (int k = 0; k < excelinstance.getTTable(i, j).size(); k++) {
+                    for (int l = 0; l < excelinstance.getTRow(i, j, k).size(); l++) {
+                        System.err.println(excelinstance.getTCell(i, j, k, l));
+                    }
+                }
+            }
         }
     }
 }

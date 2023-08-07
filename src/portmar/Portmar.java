@@ -32,7 +32,8 @@ public class Portmar extends Application {
         System.out.print("portmar main...\n");
         
         XlsxIO test = new XlsxIO();
-        test.ScanExcel("C:\\Users\\HP\\Desktop\\test.xlsx");
+        test.ScanExcel("test.xlsx");
+        test.testOutput();
         launch(args);
         
     }

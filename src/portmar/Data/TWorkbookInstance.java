@@ -44,9 +44,9 @@ public class TWorkbookInstance extends TWorkbook {
         }
     }
 
-    public void addTCell(int sheetnum, int tablenum, int rownum) {
+    public void addTCell(int sheetnum, int tablenum, int rownum, Object content) {
         if (workbook.size() > sheetnum & getTSheet(sheetnum).size() > tablenum & getTTable(sheetnum, tablenum).size() > rownum) {
-            getTRow(sheetnum, tablenum, rownum).add(new TCell(new Object()));
+            getTRow(sheetnum, tablenum, rownum).add(new TCell(content));
         }
     }
 }
