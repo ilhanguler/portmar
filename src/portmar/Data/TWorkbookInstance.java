@@ -4,6 +4,10 @@ import java.util.ArrayList;
 
 public class TWorkbookInstance extends TWorkbook {
 
+    public ArrayList<TSheet> getTWorkBook() {
+        return workbook;
+    }
+
     public ArrayList<TTable> getTSheet(int sheetnum) {
         return workbook.get(sheetnum).sheet;
     }
@@ -24,7 +28,25 @@ public class TWorkbookInstance extends TWorkbook {
         getTRow(sheetnum, tablenum, rownum).get(cellnum).cell = content;
     }
 
-    public void addSheet() {
-        
+    public void addTSheet() {
+        workbook.add(new TSheet());
+    }
+
+    public void addTTable(int sheetnum) {
+        if (workbook.size() > sheetnum) {
+            getTSheet(sheetnum).add(new TTable());
+        }
+    }
+
+    public void addTRow(int sheetnum, int tablenum) {
+        if (workbook.size() > sheetnum & getTSheet(sheetnum).size() > tablenum) {
+            getTTable(sheetnum, tablenum).add(new TRow());
+        }
+    }
+
+    public void addTCell(int sheetnum, int tablenum, int rownum) {
+        if (workbook.size() > sheetnum & getTSheet(sheetnum).size() > tablenum & getTTable(sheetnum, tablenum).size() > rownum) {
+            getTRow(sheetnum, tablenum, rownum).add(new TCell(new Object()));
+        }
     }
 }

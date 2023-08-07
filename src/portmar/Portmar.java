@@ -12,6 +12,7 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.fxml.*;
 import javax.swing.text.View;
+import portmar.DataIO.XlsxIO;
 
 public class Portmar extends Application {
     
@@ -29,7 +30,11 @@ public class Portmar extends Application {
     
     public static void main(String[] args) {
         System.out.print("portmar main...\n");
+        
+        XlsxIO test = new XlsxIO();
+        test.ScanExcel("C:\\Users\\HP\\Desktop\\test.xlsx");
         launch(args);
+        
     }
     
 }
