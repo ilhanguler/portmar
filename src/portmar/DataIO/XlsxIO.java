@@ -14,34 +14,34 @@ import portmar.Data.TWorkbookInstance;
 
 public class XlsxIO {
 
-    TWorkbookInstance excelinstance = new TWorkbookInstance();
+    TWorkbookInstance excel = new TWorkbookInstance();
 
-    public void ScanExcel(String excelFile) {
+    public void scanExcel(String excelFile) {
         try {
             FileInputStream file = new FileInputStream(new File(excelFile));
             Workbook workbook = new XSSFWorkbook(file);
             int sheetctr = 0;
+
             for (Iterator<Sheet> its = workbook.iterator(); its.hasNext(); sheetctr++) {
                 Sheet sheet = its.next();
-                excelinstance.addTSheet();
-                excelinstance.addTTable(sheetctr);
-
+                excel.addTSheet();
+                excel.addTTable(sheetctr);
                 int rowctr = 0;
+
                 for (Iterator<Row> itr = sheet.iterator(); itr.hasNext(); rowctr++) {
                     Row row = itr.next();
                     System.out.println(sheetctr);
-                    excelinstance.addTRow(sheetctr, 0);
+                    excel.addTRow(sheetctr, 0);
                     int cellctr = 0;
+
                     for (Iterator<Cell> itc = row.iterator(); itc.hasNext(); cellctr++) {
                         Cell cell = itc.next();
-                        excelinstance.addTCell(sheetctr, 0, rowctr,cell);
-
+                        excel.addTCell(sheetctr, 0, rowctr, cell);
                     }
                 }
             }
             workbook.close();
             file.close();
-
         } catch (FileNotFoundException ex) {
             Logger.getLogger(XlsxIO.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -50,14 +50,22 @@ public class XlsxIO {
     }
 
     public void testOutput() {
-        for (int i = 0; i < excelinstance.workbook.size(); i++) {
-            for (int j = 0; j < excelinstance.getTSheet(i).size(); j++) {
-                for (int k = 0; k < excelinstance.getTTable(i, j).size(); k++) {
-                    for (int l = 0; l < excelinstance.getTRow(i, j, k).size(); l++) {
-                        System.err.println(excelinstance.getTCell(i, j, k, l));
+        for (int i = 0; i < excel.workbook.size(); i++) {
+            for (int j = 0; j < excel.getTSheet(i).size(); j++) {
+                for (int k = 0; k < excel.getTTable(i, j).size(); k++) {
+                    for (int l = 0; l < excel.getTRow(i, j, k).size(); l++) {
+                        System.out.print(excel.getTCell(i, j, k, l)+" ");
                     }
+                    System.out.println();
                 }
             }
         }
+    }
+
+    static public void importExcel(String query) {
+    }
+
+    public void exportExcel(String query) {
+        
     }
 }
