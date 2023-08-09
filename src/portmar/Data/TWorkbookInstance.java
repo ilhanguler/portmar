@@ -1,8 +1,10 @@
 package portmar.Data;
 
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.HashMap;
 import org.apache.commons.collections4.map.HashedMap;
+import portmar.Data.TWorkbookEnumContainer.*;
 
 public class TWorkbookInstance extends TWorkbook {
 
@@ -30,23 +32,23 @@ public class TWorkbookInstance extends TWorkbook {
         getTRow(sheetnum, tablenum, rownum).get(cellnum).cell = content;
     }
 
-    public void addTSheet(HashMap<String,Object> sheetContent) {
+    public void addTSheet(EnumMap<sheetTrait,Object> sheetContent) {
         workbook.add(new TSheet(sheetContent));
     }
 
-    public void addTTable(int sheetnum, HashMap<String,Object> tableContent) {
+    public void addTTable(int sheetnum, EnumMap<tableTrait,Object> tableContent) {
         if (workbook.size() > sheetnum) {
             getTSheet(sheetnum).add(new TTable(tableContent));
         }
     }
 
-    public void addTRow(int sheetnum, int tablenum, HashMap<String,Object> rowContent) {
+    public void addTRow(int sheetnum, int tablenum, EnumMap<rowTrait,Object> rowContent) {
         if (workbook.size() > sheetnum & getTSheet(sheetnum).size() > tablenum) {
             getTTable(sheetnum, tablenum).add(new TRow(rowContent));
         }
     }
 
-    public void addTCell(int sheetnum, int tablenum, int rownum, Object content, HashMap<String,Object> cellContent) {
+    public void addTCell(int sheetnum, int tablenum, int rownum, Object content, EnumMap<cellTrait,Object> cellContent) {
         if (workbook.size() > sheetnum & getTSheet(sheetnum).size() > tablenum & getTTable(sheetnum, tablenum).size() > rownum) {
             getTRow(sheetnum, tablenum, rownum).add(new TCell(cellContent, content));
         }

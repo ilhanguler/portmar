@@ -23,26 +23,31 @@ public class XlsxIO {
     public void scanExcel(String excelFile) {
         try {
             FileInputStream file = new FileInputStream(new File(excelFile));
-            XSSFWorkbook  workbook = new XSSFWorkbook(file);
+            Workbook  workbook = new XSSFWorkbook(file);
             int sheetctr = 0;
-            XSSFSheet aaa = workbook.getSheetAt(sheetctr);
+            EnumMap<cellTrait, Object> cellContent = null;
+            EnumMap<rowTrait, Object> rowContent = null;
+            EnumMap<tableTrait, Object> tableContent = null;
+            EnumMap<sheetTrait, Object> sheetContent = null;
+            
             for (Iterator<Sheet> its = workbook.iterator(); its.hasNext(); sheetctr++) {
                 Sheet sheet = its.next();
-                excel.addTSheet();
-                excel.addTTable(sheetctr);
+                
+                excel.addTSheet(sheetContent);
+                excel.addTTable(sheetctr,tableContent);
                 int rowctr = 0;
-                EnumMap<cellTrait, Object> a;
+                
                 for (Iterator<Row> itr = sheet.iterator(); itr.hasNext(); rowctr++) {
                     Row row = itr.next();
                     System.out.println(sheetctr);
-                    excel.addTRow(sheetctr, 0);
+                    excel.addTRow(sheetctr, 0,rowContent);
                     int cellctr = 0;
                     System.out.println("first: " + row.getFirstCellNum() + "\tlast: " + row.getLastCellNum());
                     System.out.println("existing cells: " + row.getPhysicalNumberOfCells());
 
                     for (Iterator<Cell> itc = row.iterator(); itc.hasNext(); cellctr++) {
                         Cell cell = itc.next();
-                        excel.addTCell(sheetctr, 0, rowctr, cell);
+                        excel.addTCell(sheetctr, 0, rowctr, cell,cellContent);
                         System.out.println("cell position: " + cell.getAddress());
                     }
                 }

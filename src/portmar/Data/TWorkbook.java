@@ -2,6 +2,7 @@
 package portmar.Data;
 
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.HashMap;
 import portmar.Data.TWorkbookEnumContainer.*;
 
@@ -14,7 +15,7 @@ class TCell {
     static int counter = 0;
     public int pos_row, pos_column;
 
-    public TCell(HashMap<String, Object> cellContent, Object cell) {
+    public TCell(EnumMap<cellTrait, Object> cellContent, Object cell) {
         this.cell = cell;
         cell.getClass().getTypeName();
         index = counter;
@@ -31,7 +32,7 @@ class TRow {
     static int counter = 0;
     public int liveCellCount;
 
-    public TRow(HashMap<String, Object> rowContent) {
+    public TRow(EnumMap<rowTrait, Object> rowContent) {
         this.row = new ArrayList<>();
         index = counter;
         counter++;
@@ -48,7 +49,7 @@ class TTable {
     public int num_row, num_column;
     public int pos_x, pos_y;
 
-    public TTable(HashMap<String, Object> tableContent) {
+    public TTable(EnumMap<tableTrait, Object> tableContent) {
         this.table = new ArrayList<>();
         index = counter;
         counter++;
@@ -61,9 +62,9 @@ class TSheet {
     public ArrayList<TTable> sheet;
     public int key;
     public int index;
-    static int counter = 0;
+    static int counter = 0; 
 
-    public TSheet(HashMap<String, Object> sheetContent) {
+    public TSheet(EnumMap<sheetTrait, Object> sheetContent) {
         this.sheet = new ArrayList<>();
         index = counter;
         counter++;
