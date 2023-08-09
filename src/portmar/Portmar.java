@@ -33,7 +33,7 @@ public class Portmar extends Application {
         
         XlsxIO test = new XlsxIO();
         test.scanExcel("test.xlsx");
-        test.testOutput();
+        test.writeImport();
         launch(args);
         
     }
