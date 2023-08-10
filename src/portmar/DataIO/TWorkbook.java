@@ -1,10 +1,10 @@
 // Xlsx Data Container
-package portmar.Data;
+package portmar.DataIO;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.HashMap;
-import portmar.Data.TWorkbookEnumContainer.*;
+import portmar.DataIO.TWorkbookEnumContainer.*;
 
 class TCell {
 
@@ -17,7 +17,7 @@ class TCell {
 
     public TCell(EnumMap<cellTrait, Object> cellContent, Object cell) {
         this.cell = cell;
-        cell.getClass().getTypeName();
+        dataType = cell.getClass().getTypeName();
         index = counter;
         counter++;
     }
@@ -62,7 +62,7 @@ class TSheet {
     public ArrayList<TTable> sheet;
     public int key;
     public int index;
-    static int counter = 0; 
+    static int counter = 0;
 
     public TSheet(EnumMap<sheetTrait, Object> sheetContent) {
         this.sheet = new ArrayList<>();

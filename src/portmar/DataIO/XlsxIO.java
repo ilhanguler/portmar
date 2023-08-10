@@ -13,41 +13,43 @@ import org.apache.poi.ss.formula.functions.*;
 import org.apache.poi.xssf.eventusermodel.*;
 import org.apache.poi.xssf.usermodel.*;
 import org.apache.poi.ss.usermodel.*;
-import portmar.Data.TWorkbookInstance;
-import portmar.Data.TWorkbookEnumContainer.*;
+import portmar.DataIO.TWorkbookEnumContainer.*;
 
 public class XlsxIO {
 
     TWorkbookInstance excel = new TWorkbookInstance();
-
+    TWorkbookInstance excelLayout = new TWorkbookInstance();
+    ArrayList<sheetLayout> wbLayout = new ArrayList();
+    
     public void scanExcel(String excelFile) {
+
         try {
             FileInputStream file = new FileInputStream(new File(excelFile));
-            Workbook  workbook = new XSSFWorkbook(file);
+            Workbook workbook = new XSSFWorkbook(file);
             int sheetctr = 0;
             EnumMap<cellTrait, Object> cellContent = null;
             EnumMap<rowTrait, Object> rowContent = null;
             EnumMap<tableTrait, Object> tableContent = null;
             EnumMap<sheetTrait, Object> sheetContent = null;
-            
+
             for (Iterator<Sheet> its = workbook.iterator(); its.hasNext(); sheetctr++) {
                 Sheet sheet = its.next();
-                
+
                 excel.addTSheet(sheetContent);
-                excel.addTTable(sheetctr,tableContent);
+                excel.addTTable(sheetctr, tableContent);
                 int rowctr = 0;
-                
+
                 for (Iterator<Row> itr = sheet.iterator(); itr.hasNext(); rowctr++) {
                     Row row = itr.next();
                     System.out.println(sheetctr);
-                    excel.addTRow(sheetctr, 0,rowContent);
+                    excel.addTRow(sheetctr, 0, rowContent);
                     int cellctr = 0;
                     System.out.println("first: " + row.getFirstCellNum() + "\tlast: " + row.getLastCellNum());
                     System.out.println("existing cells: " + row.getPhysicalNumberOfCells());
 
                     for (Iterator<Cell> itc = row.iterator(); itc.hasNext(); cellctr++) {
                         Cell cell = itc.next();
-                        excel.addTCell(sheetctr, 0, rowctr, cell,cellContent);
+                        excel.addTCell(sheetctr, 0, rowctr, cell, cellContent);
                         System.out.println("cell position: " + cell.getAddress());
                     }
                 }
@@ -78,4 +80,55 @@ public class XlsxIO {
         }
     }
 
+    public ArrayList<sheetLayout> testfunc(String excelFile) {
+        try {
+            FileInputStream file = new FileInputStream(new File(excelFile));
+            Workbook workbook = new XSSFWorkbook(file);
+            int sheetctr = 0;
+            
+            for (Iterator<Sheet> its = workbook.iterator(); its.hasNext(); sheetctr++) {
+                Sheet sheet = its.next();
+                wbLayout.add(new sheetLayout());
+                int rowctr = 0;
+                
+                for (Iterator<Row> itr = sheet.iterator(); itr.hasNext(); rowctr++) {
+                    Row row = itr.next();
+                    wbLayout.get(sheetctr).sheet.add(new rowLayout());
+                    int cellctr = 0;
+                    
+                    for (Iterator<Cell> itc = row.iterator(); itc.hasNext(); cellctr++) {
+                        Cell cell = itc.next();
+                        wbLayout.get(sheetctr).sheet.get(rowctr).row.add(new cellLayout());
+                        
+                        
+                    }
+                }
+            }
+            file.close();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(XlsxIO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(XlsxIO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+}
+
+class cellLayout {
+
+    public int pos_x, pos_y;
+    public int indexTable;
+}
+
+class rowLayout {
+
+    public ArrayList<cellLayout> row;
+    public int index;
+    public int pos_y;
+}
+
+class sheetLayout {
+
+    public ArrayList<rowLayout> sheet;
+    public int index;
 }
