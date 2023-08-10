@@ -7,6 +7,22 @@ import org.apache.commons.collections4.map.HashedMap;
 import portmar.DataIO.TWorkbookEnumContainer.*;
 
 public class TWorkbookInstance extends TWorkbook {
+    
+    public TSheet getTSheetContainer(int sheetnum) {
+        return workbook.get(sheetnum);
+    }
+
+    public TTable getTTableContainer(int sheetnum, int tablenum) {
+        return getTSheet(sheetnum).get(tablenum);
+    }
+
+    public TRow getTRowContainer(int sheetnum, int tablenum, int rownum) {
+        return getTTable(sheetnum, tablenum).get(rownum);
+    }
+
+    public TCell getTCellContainer(int sheetnum, int tablenum, int rownum, int cellnum) {
+        return getTRow(sheetnum, tablenum, rownum).get(cellnum);
+    }
 
     public ArrayList<TSheet> getTWorkBook() {
         return workbook;
@@ -43,14 +59,14 @@ public class TWorkbookInstance extends TWorkbook {
     }
 
     public void addTRow(int sheetnum, int tablenum, EnumMap<rowTrait,Object> rowContent) {
-        if (workbook.size() > sheetnum & getTSheet(sheetnum).size() > tablenum) {
+        if (workbook.size() > sheetnum && getTSheet(sheetnum).size() > tablenum) {
             getTTable(sheetnum, tablenum).add(new TRow(rowContent));
         }
     }
 
-    public void addTCell(int sheetnum, int tablenum, int rownum, Object content, EnumMap<cellTrait,Object> cellContent) {
-        if (workbook.size() > sheetnum & getTSheet(sheetnum).size() > tablenum & getTTable(sheetnum, tablenum).size() > rownum) {
-            getTRow(sheetnum, tablenum, rownum).add(new TCell(cellContent, content));
+    public void addTCell(int sheetnum, int tablenum, int rownum, Object data, EnumMap<cellTrait,Object> cellContent) {
+        if (workbook.size() > sheetnum && getTSheet(sheetnum).size() > tablenum && getTTable(sheetnum, tablenum).size() > rownum) {
+            getTRow(sheetnum, tablenum, rownum).add(new TCell(cellContent, data));
         }
     }
 

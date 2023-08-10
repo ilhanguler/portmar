@@ -19,9 +19,9 @@ public class XlsxIO {
 
     TWorkbookInstance excel = new TWorkbookInstance();
     TWorkbookInstance excelLayout = new TWorkbookInstance();
-    ArrayList<sheetLayout> wbLayout = new ArrayList();
-    
-    public void scanExcel(String excelFile) {
+    ArrayList<tablePointer> tableBnd = new ArrayList();
+
+    public void importExcel(String excelFile) {
 
         try {
             FileInputStream file = new FileInputStream(new File(excelFile));
@@ -80,55 +80,83 @@ public class XlsxIO {
         }
     }
 
-    public ArrayList<sheetLayout> testfunc(String excelFile) {
+    public void scanExcel(String excelFile) {
+        EnumMap<cellTrait, Object> cellContent = null;
+        EnumMap<rowTrait, Object> rowContent = null;
+        EnumMap<tableTrait, Object> tableContent = null;
+        EnumMap<sheetTrait, Object> sheetContent = null;
+
         try {
             FileInputStream file = new FileInputStream(new File(excelFile));
             Workbook workbook = new XSSFWorkbook(file);
             int sheetctr = 0;
-            
+
             for (Iterator<Sheet> its = workbook.iterator(); its.hasNext(); sheetctr++) {
                 Sheet sheet = its.next();
-                wbLayout.add(new sheetLayout());
+                excel.addTSheet(sheetContent);
+                excel.addTTable(sheetctr, tableContent);
                 int rowctr = 0;
-                
+
                 for (Iterator<Row> itr = sheet.iterator(); itr.hasNext(); rowctr++) {
                     Row row = itr.next();
-                    wbLayout.get(sheetctr).sheet.add(new rowLayout());
+                    excel.addTRow(sheetctr, 0, rowContent);
                     int cellctr = 0;
-                    
+
                     for (Iterator<Cell> itc = row.iterator(); itc.hasNext(); cellctr++) {
                         Cell cell = itc.next();
-                        wbLayout.get(sheetctr).sheet.get(rowctr).row.add(new cellLayout());
-                        
-                        
+                        excel.addTCell(sheetctr, 0, rowctr, null, cellContent);
                     }
                 }
             }
+            workbook.close();
             file.close();
         } catch (FileNotFoundException ex) {
             Logger.getLogger(XlsxIO.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(XlsxIO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return null;
     }
-}
 
-class cellLayout {
+    public void mapExcel() {
+        int sheetctr = 0;
+        for (var sheet : excelLayout.workbook) {
+            int tablectr = 0;
+            for (var table : sheet.sheet) {
+                int rowctr = 0;
+                for (var row : table.table) {
+                    int cellctr = 0;
+                    for (var cell : row.row) {
+                        if(cellctr != 0 && row.row.get(cellctr-1).pos_column == cell.pos_column-1){
+                            if(rowctr != 0 && table.table.get(rowctr-1).row.get(cellctr).pos_row == cell.pos_row -1){
+                                tableBnd.add(new tablePointer())
+                            }
+                        }
+                        
+                        cellctr++;
+                    }
+                    rowctr++;
+                }
+                tablectr++;
+            }
+            sheetctr++;
+        }
+    }
+    
+    class tablePointer{
+        static int counter;
+        int id;
+        int pos_xhead;
+        int pos_yhead;
+        int pos_xtail;
+        int pos_ytail;
 
-    public int pos_x, pos_y;
-    public int indexTable;
-}
-
-class rowLayout {
-
-    public ArrayList<cellLayout> row;
-    public int index;
-    public int pos_y;
-}
-
-class sheetLayout {
-
-    public ArrayList<rowLayout> sheet;
-    public int index;
+        public tablePointer(int pos_xhead, int pos_yhead, int pos_xtail, int pos_ytail) {
+            this.id = counter;
+            this.pos_xhead = pos_xhead;
+            this.pos_yhead = pos_yhead;
+            this.pos_xtail = pos_xtail;
+            this.pos_ytail = pos_ytail;
+        }
+        
+    }
 }

@@ -1,0 +1,20 @@
+if(getLEFT.isexist)
+	if(getTOP.isexist)
+		setTableIDsameofTOP
+	else
+		if(tablecolumnindexcontainsitsindex) 
+			setTableIDsameofLEFT
+else
+	if(getTOP.isexist)
+		setTableIDsameofTOP
+	else
+		if(reachTOP.columnid == this.columnid && reachLEFT.rowid = this.rowid && LEFT,TOP are sameTABLE)
+			setTableIDsameofREACHEDCELL
+		elseif(reachTOP.tableid == toprowcontains.tableid)
+			setTableIDsameofREACHEDCELL
+		else
+			createNewTable
+			setTableID
+
+
+
