@@ -3,6 +3,7 @@ package portmar.DataIO;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,6 +21,7 @@ public class XlsxIO {
     TWorkbookInstance excel = new TWorkbookInstance();
     TWorkbookInstance excelLayout = new TWorkbookInstance();
     ArrayList<tablePointer> tableBnd = new ArrayList();
+    ArrayList<Boolean> excelMap = new ArrayList();
 
     public void importExcel(String excelFile) {
 
@@ -93,18 +95,36 @@ public class XlsxIO {
 
             for (Iterator<Sheet> its = workbook.iterator(); its.hasNext(); sheetctr++) {
                 Sheet sheet = its.next();
-                excel.addTSheet(sheetContent);
-                excel.addTTable(sheetctr, tableContent);
+                excelLayout.addTSheet(sheetContent);
+                excelLayout.addTTable(sheetctr, tableContent);
                 int rowctr = 0;
 
                 for (Iterator<Row> itr = sheet.iterator(); itr.hasNext(); rowctr++) {
                     Row row = itr.next();
-                    excel.addTRow(sheetctr, 0, rowContent);
+                    excelLayout.addTRow(sheetctr, 0, rowContent);
                     int cellctr = 0;
+
+                    for (int i = 0; i < row.getLastCellNum(); i++) {
+                        excelMap.add(null);
+                    }
 
                     for (Iterator<Cell> itc = row.iterator(); itc.hasNext(); cellctr++) {
                         Cell cell = itc.next();
-                        excel.addTCell(sheetctr, 0, rowctr, null, cellContent);
+                        excelLayout.addTCell(sheetctr, 0, rowctr, null, cellContent);
+                        excelMap.set(cell.getColumnIndex(), true);
+                    }
+                    
+                    for (int c = 0; c < excelLayout.getTRow(sheetctr, 0, rowctr).size(); c++) {
+                        var selectedCell = excelLayout.getTCellContainer(sheetctr, 0, rowctr, c);
+                        var leftCell = excelLayout.getTCellContainer(sheetctr, 0, rowctr, c-1);
+                        var topCell = excelLayout.getTCellContainer(sheetctr, 0, rowctr+1, c);
+                        if (c != 0 && excelLayout.getTCellContainer(sheetctr, 0, rowctr, c-1).pos_column == cell.pos_column - 1) {
+                            if (rowctr != 0 && table.table.get(rowctr - 1).row.get(cellctr).pos_row == cell.pos_row - 1) {
+
+                            } else {
+                                tableBnd.add(new tablePointer(cell.pos_column, cell.pos_row, cell.pos_column, cell.pos_row));
+                            }
+                        }
                     }
                 }
             }
@@ -126,12 +146,14 @@ public class XlsxIO {
                 for (var row : table.table) {
                     int cellctr = 0;
                     for (var cell : row.row) {
-                        if(cellctr != 0 && row.row.get(cellctr-1).pos_column == cell.pos_column-1){
-                            if(rowctr != 0 && table.table.get(rowctr-1).row.get(cellctr).pos_row == cell.pos_row -1){
-                                tableBnd.add(new tablePointer())
+                        if (cellctr != 0 && row.row.get(cellctr - 1).pos_column == cell.pos_column - 1) {
+                            if (rowctr != 0 && table.table.get(rowctr - 1).row.get(cellctr).pos_row == cell.pos_row - 1) {
+
+                            } else {
+                                tableBnd.add(new tablePointer(cell.pos_column, cell.pos_row, cell.pos_column, cell.pos_row));
                             }
                         }
-                        
+
                         cellctr++;
                     }
                     rowctr++;
@@ -141,22 +163,32 @@ public class XlsxIO {
             sheetctr++;
         }
     }
-    
-    class tablePointer{
-        static int counter;
-        int id;
-        int pos_xhead;
-        int pos_yhead;
-        int pos_xtail;
-        int pos_ytail;
 
-        public tablePointer(int pos_xhead, int pos_yhead, int pos_xtail, int pos_ytail) {
+    class tablePointer {
+
+        static int counter = 0;
+        int id;
+        int pos_colhead;
+        int pos_rowhead;
+        int pos_coltail;
+        int pos_rowtail;
+
+        public tablePointer(int pos_colhead, int pos_rowhead, int pos_coltail, int pos_rowtail) {
             this.id = counter;
-            this.pos_xhead = pos_xhead;
-            this.pos_yhead = pos_yhead;
-            this.pos_xtail = pos_xtail;
-            this.pos_ytail = pos_ytail;
+            counter++;
+            this.pos_colhead = pos_colhead;
+            this.pos_rowhead = pos_rowhead;
+            this.pos_coltail = pos_coltail;
+            this.pos_rowtail = pos_rowtail;
         }
-        
+
+        public void expandTable(int pos_row, int pos_column) {
+            if (pos_column > pos_coltail) {
+                pos_coltail++;
+            }
+            if (pos_row > pos_rowtail) {
+                pos_rowtail++;
+            }
+        }
     }
 }
