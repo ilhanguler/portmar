@@ -21,49 +21,8 @@ public class XlsxIO {
     TWorkbookInstance excel = new TWorkbookInstance();
     TWorkbookInstance excelLayout = new TWorkbookInstance();
     ArrayList<tablePointer> tableBnd = new ArrayList();
-    ArrayList<Boolean> excelMap = new ArrayList();
+    ArrayList<ArrayList<Boolean>> excelMapper = new ArrayList();
 
-    public void importExcel(String excelFile) {
-
-        try {
-            FileInputStream file = new FileInputStream(new File(excelFile));
-            Workbook workbook = new XSSFWorkbook(file);
-            int sheetctr = 0;
-            EnumMap<cellTrait, Object> cellContent = null;
-            EnumMap<rowTrait, Object> rowContent = null;
-            EnumMap<tableTrait, Object> tableContent = null;
-            EnumMap<sheetTrait, Object> sheetContent = null;
-
-            for (Iterator<Sheet> its = workbook.iterator(); its.hasNext(); sheetctr++) {
-                Sheet sheet = its.next();
-
-                excel.addTSheet(sheetContent);
-                excel.addTTable(sheetctr, tableContent);
-                int rowctr = 0;
-
-                for (Iterator<Row> itr = sheet.iterator(); itr.hasNext(); rowctr++) {
-                    Row row = itr.next();
-                    System.out.println(sheetctr);
-                    excel.addTRow(sheetctr, 0, rowContent);
-                    int cellctr = 0;
-                    System.out.println("first: " + row.getFirstCellNum() + "\tlast: " + row.getLastCellNum());
-                    System.out.println("existing cells: " + row.getPhysicalNumberOfCells());
-
-                    for (Iterator<Cell> itc = row.iterator(); itc.hasNext(); cellctr++) {
-                        Cell cell = itc.next();
-                        excel.addTCell(sheetctr, 0, rowctr, cell, cellContent);
-                        System.out.println("cell position: " + cell.getAddress());
-                    }
-                }
-            }
-            workbook.close();
-            file.close();
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(XlsxIO.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(XlsxIO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
 
     public void clearWBInstance() {
         excel.workbook.clear();
@@ -82,7 +41,7 @@ public class XlsxIO {
         }
     }
 
-    public void scanExcel(String excelFile) {
+    public void importExcel(String excelFile) {
         EnumMap<cellTrait, Object> cellContent = null;
         EnumMap<rowTrait, Object> rowContent = null;
         EnumMap<tableTrait, Object> tableContent = null;
@@ -104,25 +63,27 @@ public class XlsxIO {
                     excelLayout.addTRow(sheetctr, 0, rowContent);
                     int cellctr = 0;
 
+                    excelMapper.add(new ArrayList());
                     for (int i = 0; i < row.getLastCellNum(); i++) {
-                        excelMap.add(null);
+                        excelMapper.get(excelMapper.size()-1).add(false);
                     }
 
                     for (Iterator<Cell> itc = row.iterator(); itc.hasNext(); cellctr++) {
                         Cell cell = itc.next();
                         excelLayout.addTCell(sheetctr, 0, rowctr, null, cellContent);
-                        excelMap.set(cell.getColumnIndex(), true);
+                        excelMapper.get(excelMapper.size()-1).set(cell.getColumnIndex(), true);
                     }
                     
                     for (int c = 0; c < excelLayout.getTRow(sheetctr, 0, rowctr).size(); c++) {
                         var selectedCell = excelLayout.getTCellContainer(sheetctr, 0, rowctr, c);
                         var leftCell = excelLayout.getTCellContainer(sheetctr, 0, rowctr, c-1);
-                        var topCell = excelLayout.getTCellContainer(sheetctr, 0, rowctr+1, c);
-                        if (c != 0 && excelLayout.getTCellContainer(sheetctr, 0, rowctr, c-1).pos_column == cell.pos_column - 1) {
-                            if (rowctr != 0 && table.table.get(rowctr - 1).row.get(cellctr).pos_row == cell.pos_row - 1) {
+                        var topCell = excelLayout.getTCellContainer(sheetctr, 0, rowctr-1, c);
+                        excelMapper.get(rowctr-1).get(c);
+                        if (c != 0 && leftCell.pos_column == selectedCell.pos_column - 1) {
+                            if (rowctr != 0 && topCell.pos_row == selectedCell.pos_row - 1) {
 
-                            } else {
-                                tableBnd.add(new tablePointer(cell.pos_column, cell.pos_row, cell.pos_column, cell.pos_row));
+                            } else if(true) {
+                                
                             }
                         }
                     }
@@ -134,33 +95,6 @@ public class XlsxIO {
             Logger.getLogger(XlsxIO.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(XlsxIO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    public void mapExcel() {
-        int sheetctr = 0;
-        for (var sheet : excelLayout.workbook) {
-            int tablectr = 0;
-            for (var table : sheet.sheet) {
-                int rowctr = 0;
-                for (var row : table.table) {
-                    int cellctr = 0;
-                    for (var cell : row.row) {
-                        if (cellctr != 0 && row.row.get(cellctr - 1).pos_column == cell.pos_column - 1) {
-                            if (rowctr != 0 && table.table.get(rowctr - 1).row.get(cellctr).pos_row == cell.pos_row - 1) {
-
-                            } else {
-                                tableBnd.add(new tablePointer(cell.pos_column, cell.pos_row, cell.pos_column, cell.pos_row));
-                            }
-                        }
-
-                        cellctr++;
-                    }
-                    rowctr++;
-                }
-                tablectr++;
-            }
-            sheetctr++;
         }
     }
 
