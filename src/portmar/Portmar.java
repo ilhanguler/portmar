@@ -34,6 +34,8 @@ public class Portmar extends Application {
         XlsxIO test = new XlsxIO();
         test.importExcel("test.xlsx");
         test.writeImport();
+        test.writeMapper();
+        test.writeTableBoundaries();
         launch(args);
         
     }

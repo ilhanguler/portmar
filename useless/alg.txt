@@ -2,8 +2,11 @@ if(getLEFT.isexist)
 	if(getTOP.isexist)
 		setTableIDsameofTOP
 	else
-		if(tablecolumnindexcontainsitsindex) 
+		if(reachTOP.tableid == LEFT.tableid) 
 			setTableIDsameofLEFT
+		else
+			createNewTable
+			setTableID
 else
 	if(getTOP.isexist)
 		setTableIDsameofTOP

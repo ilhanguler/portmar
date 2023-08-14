@@ -11,7 +11,7 @@ public class TWorkbookEnumContainer {
 
     public enum rowTrait {
         KEY,
-        LIVECELLCOUNT
+        RELATIVE_POS
     }
 
     public enum tableTrait {

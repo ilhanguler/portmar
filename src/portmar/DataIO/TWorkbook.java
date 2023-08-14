@@ -17,7 +17,9 @@ class TCell {
 
     public TCell(EnumMap<cellTrait, Object> cellContent, Object cell) {
         this.cell = cell;
-        dataType = cell.getClass().getTypeName();
+        if (cell != null) {
+            dataType = cell.getClass().getTypeName();
+        }
         index = counter;
         counter++;
     }
@@ -30,7 +32,8 @@ class TRow {
     public int key;
     public int index;
     static int counter = 0;
-    public int liveCellCount;
+    public int relative_pos;
+    public int real_pos;
 
     public TRow(EnumMap<rowTrait, Object> rowContent) {
         this.row = new ArrayList<>();
@@ -46,8 +49,6 @@ class TTable {
     public int key;
     public int index;
     static int counter = 0;
-    public int num_row, num_column;
-    public int pos_x, pos_y;
 
     public TTable(EnumMap<tableTrait, Object> tableContent) {
         this.table = new ArrayList<>();
