@@ -112,35 +112,48 @@ public class XlsxIO {
                                 Boolean re_route = true;
                                 if (reachedRow > -1) {
                                     for (var boundary : tableBoundaries) {
-                                        if (boundary.containsBoth(selectedRow, selectedColumn, reachedRow, selectedColumn)) {
+                                        if (boundary.containsBoth(selectedRow, selectedColumn - 1, reachedRow, selectedColumn)) {
                                             boundary.expandTable(selectedRow, selectedColumn);
                                             re_route = false;
                                             break;
                                         }
                                     }
                                 }
-                                if(re_route){
-                                    
+                                if (re_route) {
+                                    for (var boundary : tableBoundaries) {
+                                        if (boundary.contains(selectedRow, selectedColumn - 1)) {
+                                            if (boundary.contains(selectedRow - 1, selectedColumn - 1)) {
+                                                tableBoundaries.add(new TBoundary(selectedRow, selectedColumn, selectedRow, selectedColumn));
+                                                break;
+                                            } else {
+                                                boundary.expandTable(selectedRow, selectedColumn);
+                                                break;
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         } else {
                             if (selectedRow != 0 && excelMapper.get(selectedRow - 1).get(selectedColumn)) {
-
+                                for (var boundary : tableBoundaries) {
+                                    if (boundary.contains(selectedRow - 1, selectedColumn)) {
+                                        boundary.expandTable(selectedRow, selectedColumn);
+                                        break;
+                                    }
+                                }
                             } else {
                                 int reachedRow = selectedRow;
                                 int reachedColumn = selectedColumn;
                                 for (; reachedRow != -1 && !excelMapper.get(reachedRow).get(selectedColumn); reachedRow--) {
                                     //Reaching available most TOP
                                 }
-                                for (; reachedColumn != -1 && !excelMapper.get(selectedColumn).get(reachedColumn); reachedColumn--) {
+                                for(;reachedColumn != -1 && !excelMapper.get(selectedRow).get(reachedColumn); reachedColumn--){
                                     //Reaching available most LEFT
                                 }
-                                if (reachedRow > -1 && reachedColumn > -1) {
-
-                                } else if (reachedRow > -1) {
-
-                                } else {
-
+                                for(var boundary: tableBoundaries){
+                                    if(boundary.containsBoth(reachedRow, selectedColumn, selectedRow, reachedColumn)){
+                                        
+                                    }
                                 }
                             }
                         }

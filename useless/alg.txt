@@ -24,22 +24,22 @@ TBoundary uses real positions
 TWorkbook uses relative positions
 Mapper uses real positions
 
-reachTOP
-reachLEFT
-
-if(reachLEFT.exist)
-	if(reachTOP.exist)
-		if(reachLEFT.tableid == reachTOP.tableid)
-			expandTableOf reachTOP/reachLEFT
+if(LEFT.exist)
+	if(TOP.exist)
+		setTableIDsameofTOP
+	else
+		if(reachTOP.tableid == LEFT.tableid) 
+			setTableIDsameofLEFT
 		else
-			if(toprowcontains.reachLEFT)
+			if(toprowcontains(LEFT.tableid)
 				createNewTable
-				setTableID
 			else
-				expandTableOf reachLEFT
-	else
-		
+				setTableIDsameofLEFT
 else
-	if(reachTOP.exist)
-
+	if(TOP.exist)
+		setTableIDsameofTOP
 	else
+		if(reachTOP.tableid == reachLEFT.tableid || toprowcontains(reachTOP.tableid))
+			setTableIDsameofREACHEDTOP
+		else
+			createNewTable

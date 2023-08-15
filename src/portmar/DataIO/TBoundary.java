@@ -9,7 +9,7 @@ public class TBoundary {
     int pos_coltail;
     int pos_rowtail;
 
-    public TBoundary(int pos_colhead, int pos_rowhead, int pos_coltail, int pos_rowtail) {
+    public TBoundary(int pos_rowhead, int pos_colhead, int pos_rowtail, int pos_coltail) {
         this.id = counter;
         counter++;
         this.pos_colhead = pos_colhead;
