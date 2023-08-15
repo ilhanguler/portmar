@@ -20,4 +20,26 @@ else
 			setTableID
 
 
+TBoundary uses real positions
+TWorkbook uses relative positions
+Mapper uses real positions
 
+reachTOP
+reachLEFT
+
+if(reachLEFT.exist)
+	if(reachTOP.exist)
+		if(reachLEFT.tableid == reachTOP.tableid)
+			expandTableOf reachTOP/reachLEFT
+		else
+			if(toprowcontains.reachLEFT)
+				createNewTable
+				setTableID
+			else
+				expandTableOf reachLEFT
+	else
+		
+else
+	if(reachTOP.exist)
+
+	else

@@ -97,16 +97,30 @@ public class XlsxIO {
 
                         if (selectedColumn != 0 && excelMapper.get(selectedRow).get(selectedColumn - 1)) {
                             if (selectedRow != 0 && excelMapper.get(selectedRow - 1).get(selectedColumn)) {
+                                for (var boundary : tableBoundaries) {
+                                    if (boundary.contains(selectedRow - 1, selectedColumn)) {
+                                        boundary.expandTable(selectedRow, selectedColumn);
+                                        break;
+                                    }
+                                }
 
                             } else {
                                 int reachedRow = selectedRow;
                                 for (; reachedRow != -1 && !excelMapper.get(reachedRow).get(selectedColumn); reachedRow--) {
                                     //Reaching available most TOP
                                 }
+                                Boolean re_route = true;
                                 if (reachedRow > -1) {
-
-                                } else {
-
+                                    for (var boundary : tableBoundaries) {
+                                        if (boundary.containsBoth(selectedRow, selectedColumn, reachedRow, selectedColumn)) {
+                                            boundary.expandTable(selectedRow, selectedColumn);
+                                            re_route = false;
+                                            break;
+                                        }
+                                    }
+                                }
+                                if(re_route){
+                                    
                                 }
                             }
                         } else {
