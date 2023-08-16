@@ -3,26 +3,17 @@ package portmar.DataIO;
 public class TWorkbookEnumContainer {
 
     public enum cellTrait {
-        KEY,
-        INDEX,
         POS_ROW,
         POS_COLUMN
     }
 
     public enum rowTrait {
         KEY,
-        RELATIVE_POS
     }
 
     public enum tableTrait {
-        KEY,
-        NUM_ROW,
-        NUM_COLUMN,
-        POS_X,
-        POS_Y
     }
 
     public enum sheetTrait {
-        KEY
     }
 }

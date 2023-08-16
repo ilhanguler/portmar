@@ -38,7 +38,11 @@ public class XlsxIO {
             for (int j = 0; j < excelLayout.getTSheet(i).size(); j++) {
                 for (int k = 0; k < excelLayout.getTTable(i, j).size(); k++) {
                     for (int l = 0; l < excelLayout.getTRow(i, j, k).size(); l++) {
-                        System.out.print(excelLayout.getTCell(i, j, k, l) + " ");
+                        System.out.print(excelLayout.getTCellContainer(i, j, k, l).pos_row
+                                + ": "
+                                + excelLayout.getTCellContainer(i, j, k, l).pos_column
+                                + ": "
+                                + excelLayout.getTCell(i, j, k, l) + " ");
                     }
                     System.out.println();
                 }
@@ -55,8 +59,12 @@ public class XlsxIO {
         }
     }
 
+    public Boolean isOutOfBounds(int request, int targetSize) {
+        return request >= targetSize;
+    }
+
     public void importExcel(String excelFile) {
-        EnumMap<cellTrait, Object> cellContent = null;
+        EnumMap<cellTrait, Object> cellContent = new EnumMap<cellTrait, Object>(cellTrait.class);
         EnumMap<rowTrait, Object> rowContent = null;
         EnumMap<tableTrait, Object> tableContent = null;
         EnumMap<sheetTrait, Object> sheetContent = null;
@@ -87,6 +95,8 @@ public class XlsxIO {
 
                     for (Iterator<Cell> itc = row.iterator(); itc.hasNext(); cellctr++) {
                         Cell cell = itc.next();
+                        cellContent.put(cellTrait.POS_ROW, cell.getRowIndex());
+                        cellContent.put(cellTrait.POS_COLUMN, cell.getColumnIndex());
                         excelLayout.addTCell(sheetctr, 0, rowctr, cell, cellContent);
                         excelMapper.get(excelMapper.size() - 1).set(cell.getColumnIndex(), true);
                     }
@@ -95,8 +105,14 @@ public class XlsxIO {
                         int selectedColumn = excelLayout.getTCellContainer(sheetctr, 0, rowctr, c).pos_column;
                         int selectedRow = excelLayout.getTCellContainer(sheetctr, 0, rowctr, c).pos_row;
 
-                        if (selectedColumn != 0 && excelMapper.get(selectedRow).get(selectedColumn - 1)) {
-                            if (selectedRow != 0 && excelMapper.get(selectedRow - 1).get(selectedColumn)) {
+                        if (selectedColumn != 0
+                                && !isOutOfBounds(selectedColumn - 1, excelMapper.get(selectedRow).size())
+                                && !isOutOfBounds(selectedRow, excelMapper.size())
+                                && excelMapper.get(selectedRow).get(selectedColumn - 1)) {
+                            if (selectedRow != 0
+                                    && !isOutOfBounds(selectedColumn, excelMapper.get(selectedRow - 1).size())
+                                    && !isOutOfBounds(selectedRow - 1, excelMapper.size())
+                                    && excelMapper.get(selectedRow - 1).get(selectedColumn)) {
                                 for (var boundary : tableBoundaries) {
                                     if (boundary.contains(selectedRow - 1, selectedColumn)) {
                                         boundary.expandTable(selectedRow, selectedColumn);
@@ -106,7 +122,10 @@ public class XlsxIO {
 
                             } else {
                                 int reachedRow = selectedRow;
-                                for (; reachedRow != -1 && !excelMapper.get(reachedRow).get(selectedColumn); reachedRow--) {
+                                for (; reachedRow != -1
+                                        && !isOutOfBounds(selectedColumn, excelMapper.get(reachedRow).size())
+                                        && !isOutOfBounds(reachedRow, excelMapper.size())
+                                        && !excelMapper.get(reachedRow).get(selectedColumn); reachedRow--) {
                                     //Reaching available most TOP
                                 }
                                 Boolean re_route = true;
@@ -134,7 +153,10 @@ public class XlsxIO {
                                 }
                             }
                         } else {
-                            if (selectedRow != 0 && excelMapper.get(selectedRow - 1).get(selectedColumn)) {
+                            if (selectedRow != 0
+                                    && !isOutOfBounds(selectedColumn, excelMapper.get(selectedRow - 1).size())
+                                    && !isOutOfBounds(selectedRow - 1, excelMapper.size())
+                                    && excelMapper.get(selectedRow - 1).get(selectedColumn)) {
                                 for (var boundary : tableBoundaries) {
                                     if (boundary.contains(selectedRow - 1, selectedColumn)) {
                                         boundary.expandTable(selectedRow, selectedColumn);
@@ -144,16 +166,31 @@ public class XlsxIO {
                             } else {
                                 int reachedRow = selectedRow;
                                 int reachedColumn = selectedColumn;
-                                for (; reachedRow != -1 && !excelMapper.get(reachedRow).get(selectedColumn); reachedRow--) {
+                                Boolean re_route = true;
+                                for (; reachedRow != -1
+                                        && !isOutOfBounds(selectedColumn, excelMapper.get(reachedRow).size())
+                                        && !isOutOfBounds(reachedRow, excelMapper.size())
+                                        && !excelMapper.get(reachedRow).get(selectedColumn); reachedRow--) {
                                     //Reaching available most TOP
                                 }
-                                for(;reachedColumn != -1 && !excelMapper.get(selectedRow).get(reachedColumn); reachedColumn--){
+                                for (; reachedColumn != -1 && !excelMapper.get(selectedRow).get(reachedColumn); reachedColumn--) {
                                     //Reaching available most LEFT
                                 }
-                                for(var boundary: tableBoundaries){
-                                    if(boundary.containsBoth(reachedRow, selectedColumn, selectedRow, reachedColumn)){
-                                        
+                                if (reachedRow > -1) {
+                                    for (var boundary : tableBoundaries) {
+                                        if (boundary.containsBoth(selectedRow - 1, selectedColumn, reachedRow, selectedColumn)) {
+                                            boundary.expandTable(selectedRow, selectedColumn);
+                                            re_route = false;
+                                            break;
+                                        } else if (reachedColumn > -1 && boundary.containsBoth(reachedRow, selectedColumn, selectedRow, reachedColumn)) {
+                                            boundary.expandTable(selectedRow, selectedColumn);
+                                            re_route = false;
+                                            break;
+                                        }
                                     }
+                                }
+                                if (re_route) {
+                                    tableBoundaries.add(new TBoundary(selectedRow, selectedColumn, selectedRow, selectedColumn));
                                 }
                             }
                         }
