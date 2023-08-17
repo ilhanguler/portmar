@@ -39,6 +39,7 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.Tab?>
@@ -49,141 +50,165 @@
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.control.TreeView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
 <VBox prefHeight="462.0" prefWidth="755.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="portmar.MainFXMLController">
-  <children>
-    <MenuBar VBox.vgrow="NEVER">
-      <menus>
-        <Menu mnemonicParsing="false" text="Dosya">
-          <items>
-            <MenuItem mnemonicParsing="false" text="New" />
-            <MenuItem mnemonicParsing="false" text="Open…" />
-            <Menu mnemonicParsing="false" text="Open Recent" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Close" />
-            <MenuItem mnemonicParsing="false" text="Save" />
-            <MenuItem mnemonicParsing="false" text="Save As…" />
-            <MenuItem mnemonicParsing="false" text="Revert" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Preferences…" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Quit" />
-          </items>
-        </Menu>
-        <Menu mnemonicParsing="false" text="Düzenle">
-          <items>
-            <MenuItem mnemonicParsing="false" text="Undo" />
-            <MenuItem mnemonicParsing="false" text="Redo" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Cut" />
-            <MenuItem mnemonicParsing="false" text="Copy" />
-            <MenuItem mnemonicParsing="false" text="Paste" />
-            <MenuItem mnemonicParsing="false" text="Delete" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Select All" />
-            <MenuItem mnemonicParsing="false" text="Unselect All" />
-          </items>
-        </Menu>
-            <Menu mnemonicParsing="false" text="Araçlar">
-              <items>
-                <MenuItem mnemonicParsing="false" text="Action 1" />
-              </items>
-            </Menu>
-        <Menu mnemonicParsing="false" text="Hakkında">
-          <items>
-            <MenuItem mnemonicParsing="false" text="About MyHelloApp" />
-          </items>
-        </Menu>
-      </menus>
-    </MenuBar>
-    <SplitPane dividerPositions="0.2430997876857749, 0.7460191082802548" focusTraversable="true" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
-      <items>
-            <TreeView editable="true">
-               <contextMenu>
-                  <ContextMenu>
+    <children>
+        <MenuBar VBox.vgrow="NEVER">
+            <menus>
+                <Menu mnemonicParsing="false" text="Dosya">
                     <items>
-                      <MenuItem mnemonicParsing="false" text="Unspecified Action" />
+                        <MenuItem mnemonicParsing="false" text="Ortam Oluştur" />
+                        <MenuItem mnemonicParsing="false" text="Dosya Aç" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem mnemonicParsing="false" text="Kaydet" />
+                        <MenuItem mnemonicParsing="false" text="Farklı Kaydet" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem mnemonicParsing="false" text="Seçenekler" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem mnemonicParsing="false" text="Çık" />
                     </items>
-                  </ContextMenu>
-               </contextMenu>
-            </TreeView>
-            <TableView editable="true" tableMenuButtonVisible="true">
-              <columns>
-                <TableColumn minWidth="50.0" prefWidth="75.0" text="C1" />
-                <TableColumn minWidth="50.0" prefWidth="75.0" text="C2" />
-                  <TableColumn minWidth="48.800048828125" prefWidth="72.800048828125" text="C1" />
-                  <TableColumn minWidth="44.79998779296875" prefWidth="78.39994812011719" text="C1" />
-                  <TableColumn minWidth="50.0" prefWidth="75.0" text="C1" />
-                  <TableColumn minWidth="50.0" prefWidth="75.0" text="C1" />
-                  <TableColumn minWidth="50.0" prefWidth="75.0" text="C1" />
-                  <TableColumn minWidth="50.0" prefWidth="75.0" text="C1" />
-                  <TableColumn minWidth="50.0" prefWidth="75.0" text="C1" />
-                  <TableColumn minWidth="50.0" prefWidth="75.0" text="C1" />
-                  <TableColumn minWidth="50.0" prefWidth="75.0" text="C1" />
-                  <TableColumn minWidth="50.0" prefWidth="75.0" text="C1" />
-                  <TableColumn minWidth="50.0" prefWidth="75.0" text="C1" />
-              </columns>
-               <contextMenu>
-                  <ContextMenu>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Düzenle">
                     <items>
-                      <MenuItem mnemonicParsing="false" text="Unspecified Action" />
+                        <MenuItem mnemonicParsing="false" text="Geri Al" />
+                        <MenuItem mnemonicParsing="false" text="İleri Al" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem mnemonicParsing="false" text="Hepsini Seç" />
                     </items>
-                  </ContextMenu>
-               </contextMenu>
-               <columnResizePolicy>
-                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-               </columnResizePolicy>
-            </TableView>
-            <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
-              <tabs>
-                <Tab text="Veri Girişi">
-                     <content>
-                        <VBox prefHeight="200.0" prefWidth="100.0">
-                           <children>
-                              <Button mnemonicParsing="false" text="Button" wrapText="true">
-                                 <graphic>
-                                    <TextField />
-                                 </graphic>
-                              </Button>
-                           </children>
-                        </VBox>
-                     </content>
-                </Tab>
-                <Tab text="Untitled Tab 2">
-                  <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                  </content>
-                </Tab>
-              </tabs>
-            </TabPane>
-      </items>
-    </SplitPane>
-      <TitledPane alignment="CENTER" expanded="false" text="ANAHTAR KELİME İLE ARAMA YAP">
-        <content>
-          <AnchorPane minHeight="50.0" minWidth="0.0" />
-        </content>
-      </TitledPane>
-    <HBox id="HBox" alignment="CENTER_LEFT" spacing="5.0" VBox.vgrow="NEVER">
-      <children>
-        <Label maxWidth="-1.0" text="Left status" HBox.hgrow="ALWAYS">
-          <font>
-            <Font size="11.0" fx:id="x3" />
-          </font>
-          <textFill>
-            <Color red="0.625" green="0.625" blue="0.625" fx:id="x4" />
-          </textFill>
-        </Label>
-        <Pane prefHeight="-1.0" prefWidth="-1.0" HBox.hgrow="ALWAYS" />
-        <Label font="$x3" maxWidth="-1.0" text="Right status" textFill="$x4" HBox.hgrow="NEVER" />
-      </children>
-      <padding>
-        <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
-      </padding>
-    </HBox>
-  </children>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Araçlar">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="Görev Oluştur" />
+                  <MenuItem mnemonicParsing="false" text="Görevleri Yönet" />
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Uygulama Hakkında">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="Güncellemeleri Denetle" />
+                  <MenuItem mnemonicParsing="false" text="Bilgi" />
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+        <SplitPane dividerPositions="0.25232403718459495, 0.7463479415670651" focusTraversable="true" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
+            <items>
+                <TreeView editable="true" SplitPane.resizableWithParent="false">
+                    <contextMenu>
+                        <ContextMenu>
+                            <items>
+                                <MenuItem mnemonicParsing="false" text="Unspecified Action" />
+                            </items>
+                        </ContextMenu>
+                    </contextMenu>
+                </TreeView>
+                <TableView editable="true" tableMenuButtonVisible="true">
+                    <columns>
+                        <TableColumn maxWidth="500.0" minWidth="-1.0" prefWidth="150.0" text="C1" />
+                        <TableColumn maxWidth="500.0" minWidth="-1.0" prefWidth="150.0" text="C2" />
+                        <TableColumn maxWidth="500.0" minWidth="-1.0" prefWidth="150.0" text="C1" />
+                        <TableColumn maxWidth="500.0" minWidth="-1.0" prefWidth="150.0" text="C1" />
+                        <TableColumn maxWidth="500.0" minWidth="-1.0" prefWidth="150.0" text="C1" />
+                        <TableColumn maxWidth="500.0" minWidth="-1.0" prefWidth="150.0" text="C1" />
+                        <TableColumn maxWidth="500.0" minWidth="-1.0" prefWidth="150.0" text="C1" />
+                        <TableColumn maxWidth="500.0" minWidth="-1.0" prefWidth="150.0" text="C1" />
+                        <TableColumn maxWidth="500.0" minWidth="-1.0" prefWidth="150.0" text="C1" />
+                        <TableColumn maxWidth="500.0" minWidth="-1.0" prefWidth="150.0" text="C1" />
+                        <TableColumn maxWidth="500.0" minWidth="-1.0" prefWidth="150.0" text="C1" />
+                        <TableColumn maxWidth="500.0" minWidth="-1.0" prefWidth="150.0" text="C1" />
+                        <TableColumn maxWidth="500.0" minWidth="-1.0" prefWidth="150.0" text="C1" />
+                    </columns>
+                    <contextMenu>
+                        <ContextMenu>
+                            <items>
+                                <MenuItem mnemonicParsing="false" text="Unspecified Action" />
+                            </items>
+                        </ContextMenu>
+                    </contextMenu>
+                </TableView>
+                <TabPane tabClosingPolicy="UNAVAILABLE" SplitPane.resizableWithParent="false">
+                    <tabs>
+                        <Tab text="Veri Girişi">
+                            <content>
+                                <VBox alignment="TOP_CENTER" spacing="6.0">
+                                    <children>
+                                        <TextField promptText="PROMPT" />
+                                    </children>
+                                    <padding>
+                                        <Insets top="6.0" />
+                                    </padding>
+                                </VBox>
+                            </content>
+                            <content>
+                                <ScrollPane fitToHeight="true" fitToWidth="true" pannable="true">
+                                    <content>
+                                        <VBox alignment="TOP_CENTER">
+                                 <children>
+                                    <GridPane alignment="CENTER">
+                                      <columnConstraints>
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="65.0" prefWidth="30.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="100.0" prefWidth="30.0" />
+                                      </columnConstraints>
+                                      <rowConstraints>
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                      </rowConstraints>
+                                       <children>
+                                          <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Ekle" GridPane.rowIndex="2" />
+                                          <Button cancelButton="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="İptal" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                          <TextField promptText="Prompt" GridPane.columnIndex="1" />
+                                          <TextField promptText="Prompt" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                          <Label text="ilhan123 ilhan123 ilhan123 ilhan123" />
+                                          <Label text="ilhan123 ilhan123" GridPane.rowIndex="1" />
+                                       </children>
+                                    </GridPane>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+                                 </padding>
+                                        </VBox>
+                                    </content>
+                                </ScrollPane>
+                            </content>
+                        </Tab>
+                        <Tab text="Untitled Tab 2">
+                            <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                            </content>
+                        </Tab>
+                    </tabs>
+                </TabPane>
+            </items>
+        </SplitPane>
+        <TitledPane alignment="CENTER" expanded="false" text="ANAHTAR KELİME İLE ARAMA YAP">
+            <content>
+                <AnchorPane minHeight="50.0" minWidth="0.0" />
+            </content>
+        </TitledPane>
+        <HBox id="HBox" alignment="CENTER_LEFT" spacing="5.0" VBox.vgrow="NEVER">
+            <children>
+                <Label maxWidth="-1.0" text="Left status" HBox.hgrow="ALWAYS">
+                    <font>
+                        <Font size="11.0" fx:id="x3" />
+                    </font>
+                    <textFill>
+                        <Color red="0.625" green="0.625" blue="0.625" fx:id="x4" />
+                    </textFill>
+                </Label>
+                <Pane prefHeight="-1.0" prefWidth="-1.0" HBox.hgrow="ALWAYS" />
+                <Label font="$x3" maxWidth="-1.0" text="Right status" textFill="$x4" HBox.hgrow="NEVER" />
+            </children>
+            <padding>
+                <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+            </padding>
+        </HBox>
+    </children>
 </VBox>
