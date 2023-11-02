@@ -2,18 +2,18 @@ package portmar.DataIO;
 
 public class TWorkbookEnumContainer {
 
-    public enum cellTrait {
+    enum cellTrait {
         POS_ROW,
         POS_COLUMN
     }
 
-    public enum rowTrait {
+    enum rowTrait {
         KEY,
     }
 
-    public enum tableTrait {
+    enum tableTrait {
     }
 
-    public enum sheetTrait {
+    enum sheetTrait {
     }
 }

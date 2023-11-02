@@ -47,7 +47,6 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.control.TreeView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -59,14 +58,14 @@
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="462.0" prefWidth="755.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="portmar.MainFXMLController">
+<VBox prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="portmar.MainFXMLController">
     <children>
         <MenuBar VBox.vgrow="NEVER">
             <menus>
                 <Menu mnemonicParsing="false" text="Dosya">
                     <items>
-                        <MenuItem mnemonicParsing="false" text="Ortam Oluştur" />
-                        <MenuItem mnemonicParsing="false" text="Dosya Aç" />
+                        <MenuItem mnemonicParsing="false" onAction="#createDB" text="Ortam Oluştur" />
+                        <MenuItem mnemonicParsing="false" onAction="#openFile" text="Dosya Aç" />
                         <SeparatorMenuItem mnemonicParsing="false" />
                         <MenuItem mnemonicParsing="false" text="Kaydet" />
                         <MenuItem mnemonicParsing="false" text="Farklı Kaydet" />
@@ -98,101 +97,208 @@
                 </Menu>
             </menus>
         </MenuBar>
-        <SplitPane dividerPositions="0.25232403718459495, 0.7463479415670651" focusTraversable="true" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
+        <SplitPane dividerPositions="0.25232403718459495" focusTraversable="true" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
             <items>
-                <TreeView editable="true" SplitPane.resizableWithParent="false">
-                    <contextMenu>
-                        <ContextMenu>
-                            <items>
-                                <MenuItem mnemonicParsing="false" text="Unspecified Action" />
-                            </items>
-                        </ContextMenu>
-                    </contextMenu>
-                </TreeView>
-                <TableView editable="true" tableMenuButtonVisible="true">
-                    <columns>
-                        <TableColumn maxWidth="500.0" minWidth="-1.0" prefWidth="150.0" text="C1" />
-                        <TableColumn maxWidth="500.0" minWidth="-1.0" prefWidth="150.0" text="C2" />
-                        <TableColumn maxWidth="500.0" minWidth="-1.0" prefWidth="150.0" text="C1" />
-                        <TableColumn maxWidth="500.0" minWidth="-1.0" prefWidth="150.0" text="C1" />
-                        <TableColumn maxWidth="500.0" minWidth="-1.0" prefWidth="150.0" text="C1" />
-                        <TableColumn maxWidth="500.0" minWidth="-1.0" prefWidth="150.0" text="C1" />
-                        <TableColumn maxWidth="500.0" minWidth="-1.0" prefWidth="150.0" text="C1" />
-                        <TableColumn maxWidth="500.0" minWidth="-1.0" prefWidth="150.0" text="C1" />
-                        <TableColumn maxWidth="500.0" minWidth="-1.0" prefWidth="150.0" text="C1" />
-                        <TableColumn maxWidth="500.0" minWidth="-1.0" prefWidth="150.0" text="C1" />
-                        <TableColumn maxWidth="500.0" minWidth="-1.0" prefWidth="150.0" text="C1" />
-                        <TableColumn maxWidth="500.0" minWidth="-1.0" prefWidth="150.0" text="C1" />
-                        <TableColumn maxWidth="500.0" minWidth="-1.0" prefWidth="150.0" text="C1" />
-                    </columns>
-                    <contextMenu>
-                        <ContextMenu>
-                            <items>
-                                <MenuItem mnemonicParsing="false" text="Unspecified Action" />
-                            </items>
-                        </ContextMenu>
-                    </contextMenu>
-                </TableView>
-                <TabPane tabClosingPolicy="UNAVAILABLE" SplitPane.resizableWithParent="false">
-                    <tabs>
-                        <Tab text="Veri Girişi">
-                            <content>
-                                <VBox alignment="TOP_CENTER" spacing="6.0">
-                                    <children>
-                                        <TextField promptText="PROMPT" />
-                                    </children>
-                                    <padding>
-                                        <Insets top="6.0" />
-                                    </padding>
-                                </VBox>
-                            </content>
-                            <content>
-                                <ScrollPane fitToHeight="true" fitToWidth="true" pannable="true">
-                                    <content>
-                                        <VBox alignment="TOP_CENTER">
+            <TabPane prefHeight="200.0" prefWidth="180.0" tabClosingPolicy="UNAVAILABLE" SplitPane.resizableWithParent="false">
+               <tabs>
+                  <Tab text="Dosyalar">
+                     <content>
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <TreeView fx:id="treeFileList" prefHeight="200.0" prefWidth="200.0" showRoot="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                           </children>
+                        </AnchorPane>
+                     </content>
+                  </Tab>
+                  <Tab text="Bağlantılar">
+                     <content>
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <TreeView fx:id="treeMapList" prefHeight="200.0" prefWidth="200.0" showRoot="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                           </children>
+                        </AnchorPane>
+                     </content>
+                  </Tab>
+                  <Tab text="Veritabanları">
+                     <content>
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <TreeView fx:id="treeDBList" prefHeight="200.0" prefWidth="200.0" showRoot="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                           </children>
+                        </AnchorPane>
+                     </content>
+                  </Tab>
+               </tabs>
+            </TabPane>
+            <AnchorPane>
+               <children>
+                  <TabPane fx:id="mainTabPane" tabClosingPolicy="ALL_TABS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <tabs>
+                        <Tab text="Veritabanı: VB adı">
+                           <content>
+                              <AnchorPane prefHeight="200.0" prefWidth="200.0">
                                  <children>
-                                    <GridPane alignment="CENTER">
-                                      <columnConstraints>
-                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="65.0" prefWidth="30.0" />
-                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="100.0" prefWidth="30.0" />
-                                      </columnConstraints>
-                                      <rowConstraints>
-                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                      </rowConstraints>
-                                       <children>
-                                          <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Ekle" GridPane.rowIndex="2" />
-                                          <Button cancelButton="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="İptal" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                          <TextField promptText="Prompt" GridPane.columnIndex="1" />
-                                          <TextField promptText="Prompt" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                          <Label text="ilhan123 ilhan123 ilhan123 ilhan123" />
-                                          <Label text="ilhan123 ilhan123" GridPane.rowIndex="1" />
-                                       </children>
-                                    </GridPane>
+                                    <SplitPane dividerPositions="0.5" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <items>
+                                              <TableView editable="true" tableMenuButtonVisible="true">
+                                                  <columns>
+                                                      <TableColumn maxWidth="500.0" minWidth="-1.0" prefWidth="150.0" text="C1" />
+                                                      <TableColumn maxWidth="500.0" minWidth="-1.0" prefWidth="150.0" text="C2" />
+                                                      <TableColumn maxWidth="500.0" minWidth="-1.0" prefWidth="150.0" text="C1" />
+                                                      <TableColumn maxWidth="500.0" minWidth="-1.0" prefWidth="150.0" text="C1" />
+                                                      <TableColumn maxWidth="500.0" minWidth="-1.0" prefWidth="150.0" text="C1" />
+                                                      <TableColumn maxWidth="500.0" minWidth="-1.0" prefWidth="150.0" text="C1" />
+                                                      <TableColumn maxWidth="500.0" minWidth="-1.0" prefWidth="150.0" text="C1" />
+                                                      <TableColumn maxWidth="500.0" minWidth="-1.0" prefWidth="150.0" text="C1" />
+                                                      <TableColumn maxWidth="500.0" minWidth="-1.0" prefWidth="150.0" text="C1" />
+                                                      <TableColumn maxWidth="500.0" minWidth="-1.0" prefWidth="150.0" text="C1" />
+                                                      <TableColumn maxWidth="500.0" minWidth="-1.0" prefWidth="150.0" text="C1" />
+                                                      <TableColumn maxWidth="500.0" minWidth="-1.0" prefWidth="150.0" text="C1" />
+                                                      <TableColumn maxWidth="500.0" minWidth="-1.0" prefWidth="150.0" text="C1" />
+                                                  </columns>
+                                                  <contextMenu>
+                                                      <ContextMenu>
+                                                          <items>
+                                                              <MenuItem mnemonicParsing="false" text="Unspecified Action" />
+                                                          </items>
+                                                      </ContextMenu>
+                                                  </contextMenu>
+                                              </TableView>
+                                              <TabPane tabClosingPolicy="UNAVAILABLE" SplitPane.resizableWithParent="false">
+                                                  <tabs>
+                                                      <Tab text="Veri Girişi">
+                                                          <content>
+                                                              <VBox alignment="TOP_CENTER" spacing="6.0">
+                                                                  <children>
+                                                                      <TextField promptText="PROMPT" />
+                                                                  </children>
+                                                                  <padding>
+                                                                      <Insets top="6.0" />
+                                                                  </padding>
+                                                              </VBox>
+                                                          </content>
+                                                          <content>
+                                                              <ScrollPane fitToHeight="true" fitToWidth="true" pannable="true">
+                                                                  <content>
+                                                                      <VBox alignment="TOP_CENTER">
+                                                               <children>
+                                                                  <GridPane alignment="CENTER">
+                                                                    <columnConstraints>
+                                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="65.0" prefWidth="30.0" />
+                                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="100.0" prefWidth="30.0" />
+                                                                    </columnConstraints>
+                                                                    <rowConstraints>
+                                                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                                    </rowConstraints>
+                                                                     <children>
+                                                                        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Ekle" GridPane.rowIndex="2" />
+                                                                        <Button cancelButton="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="İptal" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                                        <TextField promptText="Prompt" GridPane.columnIndex="1" />
+                                                                        <TextField promptText="Prompt" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                                        <Label text="ilhan123 ilhan123 ilhan123 ilhan123" />
+                                                                        <Label text="ilhan123 ilhan123" GridPane.rowIndex="1" />
+                                                                     </children>
+                                                                  </GridPane>
+                                                               </children>
+                                                               <padding>
+                                                                  <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+                                                               </padding>
+                                                                      </VBox>
+                                                                  </content>
+                                                              </ScrollPane>
+                                                          </content>
+                                                      </Tab>
+                                                      <Tab text="Untitled Tab 2">
+                                                          <content>
+                                                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                                                          </content>
+                                                      </Tab>
+                                                  </tabs>
+                                              </TabPane>
+                                       </items>
+                                    </SplitPane>
                                  </children>
-                                 <padding>
-                                    <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
-                                 </padding>
-                                        </VBox>
-                                    </content>
-                                </ScrollPane>
-                            </content>
+                              </AnchorPane>
+                           </content>
                         </Tab>
-                        <Tab text="Untitled Tab 2">
-                            <content>
-                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                            </content>
+                        <Tab text="Excel: Dosya adı">
+                           <content>
+                              <TabPane tabClosingPolicy="UNAVAILABLE">
+                                 <tabs>
+                                    <Tab closable="false" text="Görsel Harita">
+                                       <content>
+                                          <SplitPane dividerPositions="0.7" orientation="VERTICAL">
+                                             <items>
+                                                <ScrollPane fitToHeight="true" fitToWidth="true" pannable="true">
+                                                   <content>
+                                                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" />
+                                                   </content>
+                                                </ScrollPane>
+                                                <ScrollPane fitToHeight="true" fitToWidth="true" pannable="true" SplitPane.resizableWithParent="false">
+                                                   <content>
+                                                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" />
+                                                   </content>
+                                                </ScrollPane>
+                                             </items>
+                                          </SplitPane>
+                                       </content>
+                                    </Tab>
+                                    <Tab closable="false" text="Veri Haritası">
+                                       <content>
+                                          <ScrollPane fitToHeight="true" fitToWidth="true" pannable="true">
+                                             <content>
+                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" />
+                                             </content>
+                                          </ScrollPane>
+                                       </content>
+                                    </Tab>
+                                 </tabs>
+                              </TabPane>
+                           </content>
                         </Tab>
-                    </tabs>
-                </TabPane>
+                        <Tab text="Excel: Dosya adı">
+                           <content>
+                              <TabPane tabClosingPolicy="UNAVAILABLE">
+                                 <tabs>
+                                    <Tab closable="false" text="Görsel Harita">
+                                       <content>
+                                          <SplitPane dividerPositions="0.7" orientation="VERTICAL">
+                                             <items>
+                                                <ScrollPane fitToHeight="true" fitToWidth="true" pannable="true">
+                                                   <content>
+                                                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" />
+                                                   </content>
+                                                </ScrollPane>
+                                                <ScrollPane fitToHeight="true" fitToWidth="true" pannable="true" SplitPane.resizableWithParent="false">
+                                                   <content>
+                                                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" />
+                                                   </content>
+                                                </ScrollPane>
+                                             </items>
+                                          </SplitPane>
+                                       </content>
+                                    </Tab>
+                                    <Tab closable="false" text="Veri Haritası">
+                                       <content>
+                                          <ScrollPane fitToHeight="true" fitToWidth="true" pannable="true">
+                                             <content>
+                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" />
+                                             </content>
+                                          </ScrollPane>
+                                       </content>
+                                    </Tab>
+                                 </tabs>
+                              </TabPane>
+                           </content>
+                        </Tab>
+                     </tabs>
+                  </TabPane>
+               </children>
+            </AnchorPane>
             </items>
         </SplitPane>
-        <TitledPane alignment="CENTER" expanded="false" text="ANAHTAR KELİME İLE ARAMA YAP">
-            <content>
-                <AnchorPane minHeight="50.0" minWidth="0.0" />
-            </content>
-        </TitledPane>
         <HBox id="HBox" alignment="CENTER_LEFT" spacing="5.0" VBox.vgrow="NEVER">
             <children>
                 <Label maxWidth="-1.0" text="Left status" HBox.hgrow="ALWAYS">

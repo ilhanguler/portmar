@@ -70,8 +70,4 @@ public class TWorkbookInstance extends TWorkbook {
         }
     }
 
-    public void detectTable() {
-
-    }
-
 }

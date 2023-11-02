@@ -1,0 +1,5 @@
+db yükleme ve oluşturma
+db ve tablo kontrol konsolu
+dinamik konsol
+veri silme, değiştirme, girdisi, çıktısı
+query kabul etme
